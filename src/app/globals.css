@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-600: #047857;
+  --color-brand-700: #065f46;
+  --color-brand-800: #064e3b;
+  --color-ink: #0f172a;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: #f8fafc;
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Codes and hashes must never be ambiguous on screen. */
+.font-code {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+  letter-spacing: 0.08em;
+}
