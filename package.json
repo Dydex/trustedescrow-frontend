@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "TrustEscrow web app: buyer and seller flows, signing prompts, and the arbitrator console. Holds no authority over funds.",
+  "license": "MIT",
   "engines": {
     "node": ">=22"
   },
