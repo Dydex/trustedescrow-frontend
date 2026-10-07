@@ -157,6 +157,11 @@ export class EscrowChain {
     return decodeEscrow(contractId, native, ledger);
   }
 
+  async version(contractId: string): Promise<string> {
+    const { native } = await this.read(contractId, { method: 'version', args: [] }, 'escrow');
+    return String(native);
+  }
+
   async factoryConfig(): Promise<FactoryConfig> {
     const { native } = await this.read(this.cfg.factoryId, { method: 'config', args: [] }, 'factory');
     return decodeFactoryConfig(native);
