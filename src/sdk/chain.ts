@@ -115,6 +115,7 @@ export const escrowCalls = {
 
 export const factoryCalls = {
   create: (order: Order, salt: Uint8Array): Call => ({ method: 'create', args: [orderToScVal(order), scBytes(salt)] }),
+  createAndFund: (order: Order, salt: Uint8Array): Call => ({ method: 'create_and_fund', args: [orderToScVal(order), scBytes(salt)] }),
 };
 
 // --- client ------------------------------------------------------------------------

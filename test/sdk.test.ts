@@ -1,7 +1,7 @@
 import { Address, Keypair, StrKey, scValToNative, xdr } from '@stellar/stellar-sdk';
 import { describe, expect, it } from 'vitest';
 import { formatAmount, fromBaseUnits, toBaseUnits } from '@/sdk/amount';
-import { escrowCalls, orderToScVal, scStruct, scUnitEnum } from '@/sdk/chain';
+import { escrowCalls, factoryCalls, orderToScVal, scStruct, scUnitEnum } from '@/sdk/chain';
 import { fromHex } from '@/sdk/code';
 import { decodeEscrow } from '@/sdk/decode';
 import { contractErrorCode, explainSimulationError } from '@/sdk/errors';
@@ -99,6 +99,15 @@ describe('ABI encoding', () => {
     const bytes = scValToNative(call.args[0]!) as Uint8Array;
     expect(new TextDecoder().decode(bytes)).toBe('K7M29XQF4TBNR3WD');
     expect(() => escrowCalls.releaseWithCode('K7M2-9XQF-4TBN-R3WD')).toThrow(/canonical/);
+  });
+
+
+  it('builds factory createAndFund call with method name create_and_fund', () => {
+    const salt = new Uint8Array(32).fill(1);
+    const order = { buyer, seller, token, amount: 100n, termsHash: 'aa'.repeat(32), releaseCodeHash: 'bb'.repeat(32), fundingDeadline: 1000, deliveryWindow: 100, receiptWindow: 100, arbitrationWindow: 100 };
+    const call = factoryCalls.createAndFund(order, salt);
+    expect(call.method).toBe('create_and_fund');
+    expect(call.args).toHaveLength(2);
   });
 });
 
