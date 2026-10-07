@@ -1,5 +1,9 @@
 # TrustEscrow web app
 
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Live_Deployment-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://trustedescrow-frontend.vercel.app)
+
+> 🚀 **Live Frontend Deployment**: [https://trustedescrow-frontend.vercel.app](https://trustedescrow-frontend.vercel.app)
+
 The buyer and seller web app and the arbitrator console for TrustEscrow, a peer-to-peer escrow on Stellar. A buyer deposits into a contract made for one trade. The seller proves delivery on-chain. The buyer proves receipt by handing over a delivery code or signing a confirmation. The seller is paid only when both sides have spoken, or when the arbitrator rules. No timer ever pays the seller.
 
 **This app holds no authority over funds.** It is a convenience layer over the contracts ([trustedescrow-contract](../trustedescrow-contract)) and the off-chain services ([trustedescrow-backend](../trustedescrow-backend)). Every escrow can still be funded, completed, disputed or timed out from a CLI with neither of them running.
