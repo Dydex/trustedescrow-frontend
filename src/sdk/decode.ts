@@ -100,6 +100,7 @@ export function decodeEscrow(contractId: string, native: unknown, ledger: number
     feeBps: Number(int(e.fee_bps, 'fee_bps')),
     feeRecipient: str(e.fee_recipient, 'fee_recipient'),
     termsHash: hex(e.terms_hash, 'terms_hash'),
+    salt: hex(e.salt, 'salt'),
     releaseCodeHash: hex(e.release_code_hash, 'release_code_hash'),
     state: state(e.state, 'state'),
     createdAt: seconds(e.created_at, 'created_at'),

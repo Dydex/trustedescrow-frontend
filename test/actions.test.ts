@@ -17,6 +17,7 @@ function escrow(over: Partial<EscrowSnapshot> = {}): EscrowSnapshot {
     feeBps: 150,
     feeRecipient: 'GFEE',
     termsHash: '00'.repeat(32),
+    salt: '00'.repeat(32),
     releaseCodeHash: '11'.repeat(32),
     state: 'Created',
     createdAt: 0,
