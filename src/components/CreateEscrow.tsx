@@ -10,7 +10,7 @@ import { orderFromTerms, termsMismatches } from '@/sdk/terms';
 import { sealCode, type VaultSecret } from '@/sdk/vault';
 import { ApiError, api, type Draft } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
-import { configProblems, railForToken } from '@/lib/config';
+import { configProblems, railForToken, tokenDisplay } from '@/lib/config';
 import { useAgreedTerms } from '@/lib/queries';
 import { useStepUp } from '@/lib/step-up';
 import { chain, useTx } from '@/lib/tx';
@@ -80,6 +80,7 @@ export function CreateEscrow({ draft }: { draft: Draft }) {
 
   const t = terms.data.terms;
   const rail = railForToken(t.token);
+  const tok = tokenDisplay(t.token);
   const wrongWallet = !!walletAddress && walletAddress !== t.buyer;
 
   const readiness = useQuery({
@@ -211,26 +212,26 @@ export function CreateEscrow({ draft }: { draft: Draft }) {
           {r && r.accountExists && !r.hasTrustline && (
             <div className="space-y-2">
               <Alert tone="warning" title="Trustline missing">
-                Your wallet needs a {rail?.symbol ?? 'token'} trustline before creating or funding this escrow.
+                Your wallet needs a {tok.symbol} trustline before creating or funding this escrow.
               </Alert>
               {r.asset && (
                 <Button
                   variant="secondary"
                   onClick={() =>
                     void tx
-                      .run(`Add ${rail?.symbol ?? 'token'} trustline`, ({ sign, address, onStep }) => chain.addTrustline(address, r.asset!, sign, onStep))
+                      .run(`Add ${tok.symbol} trustline`, ({ sign, address, onStep }) => chain.addTrustline(address, r.asset!, sign, onStep))
                       .then(() => readiness.refetch())
                       .catch(() => undefined)
                   }
                 >
-                  Add {rail?.symbol ?? 'token'} trustline
+                  Add {tok.symbol} trustline
                 </Button>
               )}
             </div>
           )}
-          {r && r.hasTrustline && !r.enough && rail && (
+          {r && r.hasTrustline && !r.enough && (
             <Alert tone="warning" title="Insufficient token balance">
-              Wallet balance is {formatAmount(r.balance, rail.decimals, rail.symbol)}, but this escrow requires {formatAmount(BigInt(t.amount), rail.decimals, rail.symbol)}.
+              Wallet balance is {formatAmount(r.balance, tok.decimals, tok.symbol)}, but this escrow requires {formatAmount(BigInt(t.amount), tok.decimals, tok.symbol)}.
             </Alert>
           )}
           {progress.escrow ? (
