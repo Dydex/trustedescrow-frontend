@@ -41,6 +41,7 @@ export interface EscrowSnapshot {
   amount: bigint;
   feeBps: number;
   feeRecipient: string;
+  unsweptFee: bigint;
   termsHash: string;
   releaseCodeHash: string;
   state: EscrowState;
