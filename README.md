@@ -58,6 +58,15 @@ npm run lint
 npm test            # unit tests: code vectors, canonical JSON, vault, actions, ABI, decoding
 ```
 
+## Deploying on Vercel
+
+This is a standard Next.js app; Vercel builds it with zero extra config. Connect the repo in the Vercel dashboard and set every `NEXT_PUBLIC_*` variable from `.env.example` as a Vercel project environment variable — in particular:
+
+- `NEXT_PUBLIC_API_URL` — the deployed backend's URL (e.g. its Render service URL). The backend's own `CORS_ORIGINS` (or `PUBLIC_WEB_URL`) must include this app's Vercel URL, or the browser will be blocked by CORS.
+- `NEXT_PUBLIC_FACTORY_CONTRACT_ID` and `NEXT_PUBLIC_ESCROW_WASM_HASH` — from the contract repo's `deployments/testnet.env` after `scripts/deploy-testnet.sh`. These are trust anchors baked into the build (see "Trust anchors" above); a redeploy of the contract needs a redeploy of this app with the new values, not just a backend config change.
+
+Since every `NEXT_PUBLIC_*` value is compiled into the browser bundle, none of them are secrets — there's nothing here that needs Vercel's encrypted-secret handling specifically, just plain project environment variables.
+
 ## Layout
 
 ```
