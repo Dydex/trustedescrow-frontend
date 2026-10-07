@@ -63,7 +63,13 @@ export function deviceLabel(): string {
 
 type Query = Record<string, string | number | boolean | undefined>;
 
-async function request<T>(method: string, path: string, opts: { body?: unknown; query?: Query; form?: FormData; raw?: boolean } = {}): Promise<T> {
+async function request<T>(
+  method: string,
+  path: string,
+  opts: { body?: unknown; query?: Query; form?: FormData; raw?: boolean } = {},
+  retries = 3,
+  delayMs = 500,
+): Promise<T> {
   const url = new URL(config.apiUrl + path);
   for (const [k, v] of Object.entries(opts.query ?? {})) if (v !== undefined) url.searchParams.set(k, String(v));
   const headers: Record<string, string> = {};
@@ -82,6 +88,15 @@ async function request<T>(method: string, path: string, opts: { body?: unknown; 
   } catch {
     throw new ApiError(0, 'NETWORK', 'Could not reach the TrustEscrow service. Your escrows are unaffected: they live on-chain.');
   }
+
+  if (res.status === 429 && retries > 0) {
+    const retryHeader = res.headers.get('Retry-After');
+    const parsedWait = retryHeader ? parseInt(retryHeader, 10) * 1000 : NaN;
+    const waitTime = !isNaN(parsedWait) && parsedWait > 0 ? parsedWait : delayMs;
+    await new Promise((resolve) => setTimeout(resolve, waitTime));
+    return request<T>(method, path, opts, retries - 1, delayMs * 2);
+  }
+
   if (opts.raw) {
     if (!res.ok) throw await toError(res);
     return res as unknown as T;
@@ -94,9 +109,13 @@ async function request<T>(method: string, path: string, opts: { body?: unknown; 
 async function toError(res: Response): Promise<ApiError> {
   try {
     const j = (await res.json()) as { error?: { code?: string; message?: string; details?: unknown } };
-    return new ApiError(res.status, j.error?.code ?? 'ERROR', j.error?.message ?? res.statusText, j.error?.details);
+    const defaultMsg = res.status === 429 ? 'Rate limit exceeded. Please wait a moment before trying again.' : res.statusText;
+    const defaultCode = res.status === 429 ? 'TOO_MANY_REQUESTS' : 'ERROR';
+    return new ApiError(res.status, j.error?.code ?? defaultCode, j.error?.message ?? defaultMsg, j.error?.details);
   } catch {
-    return new ApiError(res.status, 'ERROR', res.statusText || 'Request failed');
+    const defaultMsg = res.status === 429 ? 'Rate limit exceeded. Please wait a moment before trying again.' : res.statusText || 'Request failed';
+    const defaultCode = res.status === 429 ? 'TOO_MANY_REQUESTS' : 'ERROR';
+    return new ApiError(res.status, defaultCode, defaultMsg);
   }
 }
 
