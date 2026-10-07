@@ -94,7 +94,7 @@ describe('Delivered', () => {
 describe('Disputed', () => {
   const e = escrow({
     state: 'Disputed',
-    dispute: { openedBy: 'ReceiptTimeout', openedAt: 9000, fromState: 'Delivered', deadline: 20000 },
+    dispute: { openedBy: 'ReceiptTimeout', openedAt: 9000, fromState: 'Delivered', deadline: 20000, statementHash: null, rulingHash: null },
   });
   it('lets only the arbitrator resolve, only before the deadline', () => {
     expect(ids(e, 'arbitrator', 19999)).toEqual(['resolve']);

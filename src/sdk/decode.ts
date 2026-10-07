@@ -75,6 +75,8 @@ export function decodeEscrow(contractId: string, native: unknown, ledger: number
       openedAt: seconds(d.opened_at, 'dispute.opened_at'),
       fromState: state(d.from_state, 'dispute.from_state'),
       deadline: seconds(d.deadline, 'dispute.deadline'),
+      statementHash: d.statement_hash ? hex(d.statement_hash, 'dispute.statement_hash') : null,
+      rulingHash: d.ruling_hash ? hex(d.ruling_hash, 'dispute.ruling_hash') : null,
     };
   }
 

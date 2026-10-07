@@ -23,6 +23,8 @@ export interface Dispute {
   openedAt: number;
   fromState: EscrowState;
   deadline: number;
+  statementHash: string | null;
+  rulingHash: string | null;
 }
 
 export type Settlement =
