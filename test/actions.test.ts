@@ -16,7 +16,9 @@ function escrow(over: Partial<EscrowSnapshot> = {}): EscrowSnapshot {
     amount: 100n,
     feeBps: 150,
     feeRecipient: 'GFEE',
+    unsweptFee: 0n,
     termsHash: '00'.repeat(32),
+    salt: '00'.repeat(32),
     releaseCodeHash: '11'.repeat(32),
     state: 'Created',
     createdAt: 0,
@@ -94,7 +96,7 @@ describe('Delivered', () => {
 describe('Disputed', () => {
   const e = escrow({
     state: 'Disputed',
-    dispute: { openedBy: 'ReceiptTimeout', openedAt: 9000, fromState: 'Delivered', deadline: 20000 },
+    dispute: { openedBy: 'ReceiptTimeout', openedAt: 9000, fromState: 'Delivered', deadline: 20000, statementHash: null, rulingHash: null },
   });
   it('lets only the arbitrator resolve, only before the deadline', () => {
     expect(ids(e, 'arbitrator', 19999)).toEqual(['resolve']);
