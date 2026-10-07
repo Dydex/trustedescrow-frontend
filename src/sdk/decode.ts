@@ -75,6 +75,8 @@ export function decodeEscrow(contractId: string, native: unknown, ledger: number
       openedAt: seconds(d.opened_at, 'dispute.opened_at'),
       fromState: state(d.from_state, 'dispute.from_state'),
       deadline: seconds(d.deadline, 'dispute.deadline'),
+      statementHash: d.statement_hash ? hex(d.statement_hash, 'dispute.statement_hash') : null,
+      rulingHash: d.ruling_hash ? hex(d.ruling_hash, 'dispute.ruling_hash') : null,
     };
   }
 
@@ -99,7 +101,9 @@ export function decodeEscrow(contractId: string, native: unknown, ledger: number
     amount: int(e.amount, 'amount'),
     feeBps: Number(int(e.fee_bps, 'fee_bps')),
     feeRecipient: str(e.fee_recipient, 'fee_recipient'),
+    unsweptFee: int(e.unswept_fee, 'unswept_fee'),
     termsHash: hex(e.terms_hash, 'terms_hash'),
+    salt: hex(e.salt, 'salt'),
     releaseCodeHash: hex(e.release_code_hash, 'release_code_hash'),
     state: state(e.state, 'state'),
     createdAt: seconds(e.created_at, 'created_at'),
