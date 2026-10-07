@@ -379,8 +379,32 @@ export function EscrowActions({ viewer, ...ctx }: Ctx & { viewer: Viewer }) {
       {ctx.e.state === 'Funded' && <ExtendDeadline ctx={ctx} kind="delivery" />}
       {ctx.e.state === 'Delivered' && <ExtendDeadline ctx={ctx} kind="receipt" />}
 
+      <BumpTtl ctx={ctx} />
+
       <FeeBreakdown e={ctx.e} />
     </div>
+  );
+}
+
+function BumpTtl({ ctx }: { ctx: Ctx }) {
+  const run = useRunCall(ctx);
+
+  return (
+    <Secondary title="Contract Storage & TTL Maintenance">
+      <div className="space-y-3">
+        <p className="text-sm text-slate-600">
+          Soroban smart contract storage entries require periodic maintenance to prevent archival. Any user can trigger a bump to restore and extend contract TTL.
+        </p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
+            ✓ Contract Active (On-chain)
+          </span>
+          <Button variant="secondary" onClick={() => void run('Bump Contract TTL', escrowCalls.bump())}>
+            Bump Contract TTL
+          </Button>
+        </div>
+      </div>
+    </Secondary>
   );
 }
 
