@@ -111,6 +111,7 @@ describe('decodeEscrow', () => {
     amount: 250_000_000n,
     fee_bps: 150,
     fee_recipient: arbitrator,
+    unswept_fee: 0n,
     terms_hash: fromHex('aa'.repeat(32)),
     salt: fromHex('11'.repeat(32)),
     release_code_hash: fromHex('bb'.repeat(32)),
@@ -132,6 +133,7 @@ describe('decodeEscrow', () => {
     const e = decodeEscrow(escrowId, native, 123);
     expect(e.state).toBe('Disputed');
     expect(e.amount).toBe(250_000_000n);
+    expect(e.unsweptFee).toBe(0n);
     expect(e.salt).toBe('11'.repeat(32));
     expect(e.proof).toEqual({ kind: 'Tracking', uri: 'https://t.example', hash: 'cc'.repeat(32), submittedAt: 100 });
     expect(e.dispute).toEqual({ openedBy: 'ReceiptTimeout', openedAt: 3700, fromState: 'Delivered', deadline: 7300 });
@@ -182,6 +184,7 @@ describe('terms and order', () => {
         amount: 250_000_000n,
         fee_bps: 0,
         fee_recipient: arbitrator,
+        unswept_fee: 0n,
         terms_hash: fromHex('aa'.repeat(32)),
         salt: fromHex('00'.repeat(32)),
         release_code_hash: fromHex('bb'.repeat(32)),
