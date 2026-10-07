@@ -110,6 +110,8 @@ export const escrowCalls = {
   refundAfterDeliveryTimeout: (): Call => ({ method: 'refund_after_delivery_timeout', args: [] }),
   refundAfterArbitrationTimeout: (): Call => ({ method: 'refund_after_arbitration_timeout', args: [] }),
   sellerRefund: (): Call => ({ method: 'seller_refund', args: [] }),
+  extendDelivery: (seconds: number): Call => ({ method: 'extend_delivery', args: [scU64(seconds)] }),
+  extendReceipt: (seconds: number): Call => ({ method: 'extend_receipt', args: [scU64(seconds)] }),
   bump: (): Call => ({ method: 'bump', args: [] }),
 };
 

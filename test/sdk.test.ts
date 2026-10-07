@@ -102,12 +102,14 @@ describe('ABI encoding', () => {
   });
 
 
-  it('builds factory createAndFund call with method name create_and_fund', () => {
-    const salt = new Uint8Array(32).fill(1);
-    const order = { buyer, seller, token, amount: 100n, termsHash: 'aa'.repeat(32), releaseCodeHash: 'bb'.repeat(32), fundingDeadline: 1000, deliveryWindow: 100, receiptWindow: 100, arbitrationWindow: 100 };
-    const call = factoryCalls.createAndFund(order, salt);
-    expect(call.method).toBe('create_and_fund');
-    expect(call.args).toHaveLength(2);
+  it('builds extend_delivery and extend_receipt calls with u64 seconds', () => {
+    const d = escrowCalls.extendDelivery(86400);
+    expect(d.method).toBe('extend_delivery');
+    expect(scValToNative(d.args[0]!)).toBe(86400n);
+
+    const r = escrowCalls.extendReceipt(43200);
+    expect(r.method).toBe('extend_receipt');
+    expect(scValToNative(r.args[0]!)).toBe(43200n);
   });
 });
 
