@@ -134,6 +134,7 @@ describe('decodeEscrow', () => {
     expect(e.state).toBe('Disputed');
     expect(e.amount).toBe(250_000_000n);
     expect(e.unsweptFee).toBe(0n);
+    expect(e.salt).toBe('11'.repeat(32));
     expect(e.proof).toEqual({ kind: 'Tracking', uri: 'https://t.example', hash: 'cc'.repeat(32), submittedAt: 100 });
     expect(e.dispute).toEqual({ openedBy: 'ReceiptTimeout', openedAt: 3700, fromState: 'Delivered', deadline: 7300 });
     expect(e.settlement).toEqual({ status: 'Open' });
