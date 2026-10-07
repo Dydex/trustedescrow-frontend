@@ -18,6 +18,7 @@ export function Header() {
   const links = signedIn
     ? [
         { href: '/dashboard', label: 'Dashboard' },
+        { href: '/orders', label: 'Orders' },
         { href: '/orders/new', label: 'New order' },
         { href: '/notifications', label: unread ? `Alerts (${unread})` : 'Alerts' },
         { href: '/settings', label: 'Settings' },
